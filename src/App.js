@@ -6,6 +6,10 @@ import FaceRecognitionImage from './components/FaceRecognitionImage/FaceRecognit
 import Rank from './components/Rank/Rank';
 import 'tachyons';
 import './App.css';
+import Particles from 'react-particles-js';
+
+
+
 
 class App extends Component {
   constructor(){
@@ -26,12 +30,29 @@ class App extends Component {
   render(){
     return (
       <div className="App">
+        <Particles 
+              params={{
+            		particles: {
+            			line_linked: {
+            				shadow: {
+            					enable: true,
+            					color: "#3CA9D1",
+            					blur: 5
+            				}
+            			}
+            		}
+            	}}
+              style={{
+                width: '100%',
+                
+              }}
+            />
         <Navigation />
         <Logo />
         <Rank></Rank>
         <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
         <FaceRecognitionImage /> 
-
+        
       </div>
     );
   }
