@@ -4,6 +4,7 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognitionImage from './components/FaceRecognitionImage/FaceRecognitionImage';
 import Rank from './components/Rank/Rank';
+import Login from './components/Login/Login';
 import 'tachyons';
 import './App.css';
 import Particles from 'react-particles-js';
@@ -33,7 +34,8 @@ class App extends Component {
       input:'',
       searchParameters: '',
       books: [],
-      bookCount: 0
+      bookCount: 0,
+      route: 'login'
     }
   }
 
@@ -67,11 +69,15 @@ class App extends Component {
               params={{particlesOptions}}
         />
         <Navigation />
-        <Logo />
-        <Rank></Rank>
-        <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
-        <FaceRecognitionImage searchParameters={this.state.searchParameters} books={this.state.books} bookCount={this.state.bookCount}/> 
-        
+        { this.state.route === 'login' 
+          ?  <Login /> 
+          :  <div>
+            <Logo />
+            <Rank />
+            <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
+            <FaceRecognitionImage searchParameters={this.state.searchParameters} books={this.state.books} bookCount={this.state.bookCount}/> 
+            </div>
+        }
       </div>
     );
   }
