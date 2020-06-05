@@ -58,8 +58,11 @@ class App extends Component {
   //     console.log('err getting books: ',err);
   //     this.setState({isLoading: false})
   //   })
-      
-      
+  }
+
+  onRouteChange = () => {
+    this.setState({route: 'home'});
+
   }
 
   render(){
@@ -70,7 +73,7 @@ class App extends Component {
         />
         <Navigation />
         { this.state.route === 'login' 
-          ?  <Login /> 
+          ?  <Login onRouteChange={this.onRouteChange}/> 
           :  <div>
             <Logo />
             <Rank />
