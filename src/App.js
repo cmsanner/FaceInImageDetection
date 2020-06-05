@@ -60,9 +60,9 @@ class App extends Component {
   //   })
   }
 
-  onRouteChange = () => {
-    this.setState({route: 'home'});
-
+  onRouteChange = (route) => {
+    console.log('current route: ',route);
+    this.setState({route: route});
   }
 
   render(){
@@ -71,7 +71,7 @@ class App extends Component {
         <Particles className='particles'
               params={{particlesOptions}}
         />
-        <Navigation />
+        <Navigation onRouteChange={this.onRouteChange} />
         { this.state.route === 'login' 
           ?  <Login onRouteChange={this.onRouteChange}/> 
           :  <div>
