@@ -7,6 +7,10 @@ import Rank from './components/Rank/Rank';
 import 'tachyons';
 import './App.css';
 import Particles from 'react-particles-js';
+import {books} from './books2';
+//const Clarifai = require('flarifai')   OLD WAY
+//import Clarifai from 'clarifai'        MEW WAY
+
 
 const particlesOptions = {
   particles: {
@@ -25,16 +29,35 @@ class App extends Component {
   constructor(){
     super()
     this.state = {
-      input:''
+      isLoading: false,
+      input:'',
+      searchParameters: '',
+      books: [],
+      bookCount: 0
     }
   }
 
   onInputChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
+    this.setState({input: event.target.value})
   }
 
   onButtonSubmit = () => {
-    console.log('Click');
+    this.setState({isLoading: true})
+    this.setState({searchParameters: this.state.input});
+  
+    //get sample book data from file
+    this.setState({books: books.items, bookCount: books.totalItems, isLoading: false});
+   
+  //  fetch('https://www.googleapis.com/books/v1/volumes?q='+this.state.input)
+  //   .then(response => response.json())
+  //   .then(data => {this.setState({books: data.items, bookCount: data.totalItems, isLoading: false })})
+  //   .catch(err => {
+  //     console.log('err getting books: ',err);
+  //     this.setState({isLoading: false})
+  //   })
+      
+      
   }
 
   render(){
@@ -47,7 +70,7 @@ class App extends Component {
         <Logo />
         <Rank></Rank>
         <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
-        <FaceRecognitionImage /> 
+        <FaceRecognitionImage searchParameters={this.state.searchParameters} books={this.state.books} bookCount={this.state.bookCount}/> 
         
       </div>
     );

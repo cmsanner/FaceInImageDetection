@@ -7,6 +7,11 @@
   justify-content: center;
 }
 
+.center1{
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .particles{
   position: fixed;
   top: 0;
