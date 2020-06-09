@@ -9,6 +9,7 @@ import 'tachyons';
 import './App.css';
 import Particles from 'react-particles-js';
 import {books} from './books2';
+import Register from './components/Register/Register';
 //const Clarifai = require('flarifai')   OLD WAY
 //import Clarifai from 'clarifai'        MEW WAY
 
@@ -35,7 +36,8 @@ class App extends Component {
       searchParameters: '',
       books: [],
       bookCount: 0,
-      route: 'login'
+      route: 'login',
+      isSignedIn: false
     }
   }
 
@@ -62,7 +64,35 @@ class App extends Component {
 
   onRouteChange = (route) => {
     console.log('current route: ',route);
+    if (route === 'signout'){
+      this.setState({isSignedIn: false})
+    }else if (route === 'home'){
+      this.setState({isSignedIn: true})
+    }
     this.setState({route: route});
+  }
+
+  //https://stackoverflow.com/questions/46592833/how-to-use-switch-statement-inside-a-react-component/46593006
+  renderRouteSwitch(param){
+    switch(this.state.route){
+      case 'login':  
+        return <Login onRouteChange={this.onRouteChange}/>
+          
+      case 'register' : 
+          return <Register onRouteChange={this.onRouteChange}/>
+ 
+      case 'signout' : 
+          return  <Login onRouteChange={this.onRouteChange}/>
+   
+      default:  
+          return <div>
+            <Logo />
+            <Rank />
+            <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/> 
+            <FaceRecognitionImage searchParameters={this.state.searchParameters} books={this.state.books} bookCount={this.state.bookCount}/> 
+          </div>
+      
+    }
   }
 
   render(){
@@ -71,16 +101,8 @@ class App extends Component {
         <Particles className='particles'
               params={{particlesOptions}}
         />
-        <Navigation onRouteChange={this.onRouteChange} />
-        { this.state.route === 'login' 
-          ?  <Login onRouteChange={this.onRouteChange}/> 
-          :  <div>
-            <Logo />
-            <Rank />
-            <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
-            <FaceRecognitionImage searchParameters={this.state.searchParameters} books={this.state.books} bookCount={this.state.bookCount}/> 
-            </div>
-        }
+        <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange} />
+        {this.renderRouteSwitch(this.state.route)}
       </div>
     );
   }
