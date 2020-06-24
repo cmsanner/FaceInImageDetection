@@ -37,8 +37,25 @@ class App extends Component {
       books: [],
       bookCount: 0,
       route: 'login',
-      isSignedIn: false
+      isSignedIn: false,
+      user:{
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined:''
+      }
     }
+  }
+
+  loadUser = (data) =>{
+    this.setState( {user:{
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined
+    }})
   }
 
   onInputChange = (event) => {
@@ -76,10 +93,10 @@ class App extends Component {
   renderRouteSwitch(param){
     switch(this.state.route){
       case 'login':  
-        return <Login onRouteChange={this.onRouteChange}/>
+        return <Login loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
           
       case 'register' : 
-          return <Register onRouteChange={this.onRouteChange}/>
+          return <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
  
       case 'signout' : 
           return  <Login onRouteChange={this.onRouteChange}/>
@@ -87,7 +104,7 @@ class App extends Component {
       default:  
           return <div>
             <Logo />
-            <Rank />
+            <Rank name={this.state.user.name} entries={this.state.user.entries}/>
             <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/> 
             <FaceRecognitionImage searchParameters={this.state.searchParameters} books={this.state.books} bookCount={this.state.bookCount}/> 
           </div>

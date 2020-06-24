@@ -19,9 +19,24 @@ class Login extends React.Component {
     }
 
     onSubmitLogIn = () => {
-        console.log(this.state)
-        // () => onRouteChange('home')
-        this.props.onRouteChange('home');
+        fetch('http://localhost:3000/login',{
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                email: this.state.logInEmail,
+                password: this.state.logInPassword
+            })
+        })
+        .then(response => response.json())
+        .then(user => {
+            // if (user === 'success' ){
+            console.log('user.id: ', user.id);
+            console.log('user: ', user );
+            if(user.id){
+                this.props.loadUser(user)
+                this.props.onRouteChange('home');
+            }
+        })
     }
 
     render(){
