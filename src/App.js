@@ -68,15 +68,33 @@ class App extends Component {
     this.setState({searchParameters: this.state.input});
   
     //get sample book data from file
-    this.setState({books: books.items, bookCount: books.totalItems, isLoading: false});
+    // this.setState({books: books.items, bookCount: books.totalItems, isLoading: false});
+
    
-  //  fetch('https://www.googleapis.com/books/v1/volumes?q='+this.state.input)
-  //   .then(response => response.json())
-  //   .then(data => {this.setState({books: data.items, bookCount: data.totalItems, isLoading: false })})
-  //   .catch(err => {
-  //     console.log('err getting books: ',err);
-  //     this.setState({isLoading: false})
-  //   })
+   fetch('https://www.googleapis.com/books/v1/volumes?q='+this.state.input)
+    .then(response => response.json())
+    .then(data => {
+      this.setState({books: data.items, bookCount: data.totalItems, isLoading: false })
+      fetch('http://localhost:3000/image',{
+        method: 'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          id: this.state.user.id
+        })
+      })
+        .then(response => response.json())
+        .then(count => {
+          // this.setState({user:{
+          //   entries: count
+          // }})
+          this.setState(Object.assign(this.state.user, {entries: count}))
+        })
+
+    })
+    .catch(err => {
+      console.log('err getting books: ',err);
+      this.setState({isLoading: false})
+    })
   }
 
   onRouteChange = (route) => {
