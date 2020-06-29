@@ -33,10 +33,16 @@ class Register  extends React.Component{
         })
         .then(response => response.json())
         .then(user => {
-            if (user){
+            console.log('my user: ',user, 'this.state.name: ', this.state.registerName);
+            if (user.name === this.state.registerName){
                 this.props.loadUser(user)
                 this.props.onRouteChange('home');
+            }else{
+                alert(user);
             }
+        })
+        .catch(err => {
+            alert('problem creating user');
         })
     }
 
