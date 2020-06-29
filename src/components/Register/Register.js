@@ -31,7 +31,16 @@ class Register  extends React.Component{
                 name: this.state.registerName
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            if(!response.ok){
+                console.log('there was an error: ', response)
+                throw new Error('problem registering: ' + this.state.registerName)
+                
+            }else{
+                return response.json()
+            } 
+        })
+        // .then(response => response.json())
         .then(user => {
             console.log('my user: ',user, 'this.state.name: ', this.state.registerName);
             if (user.name === this.state.registerName){
@@ -42,7 +51,7 @@ class Register  extends React.Component{
             }
         })
         .catch(err => {
-            alert('problem creating user');
+            alert(err);
         })
     }
 
