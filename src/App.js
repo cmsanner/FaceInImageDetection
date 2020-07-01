@@ -8,7 +8,7 @@ import Login from './components/Login/Login';
 import 'tachyons';
 import './App.css';
 import Particles from 'react-particles-js';
-import {books} from './books2';
+// import {books} from './books2';
 import Register from './components/Register/Register';
 //const Clarifai = require('flarifai')   OLD WAY
 //import Clarifai from 'clarifai'        MEW WAY
@@ -26,27 +26,29 @@ const particlesOptions = {
   }
 }
 
+const initialState = {
+  isLoading: false,
+  input:'',
+  searchParameters: '',
+  books: [],
+  bookCount: 0,
+  route: 'login',
+  isSignedIn: false,
+  user:{
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined:''
+  }
+}
 
 class App extends Component {
   constructor(){
-    super()
-    this.state = {
-      isLoading: false,
-      input:'',
-      searchParameters: '',
-      books: [],
-      bookCount: 0,
-      route: 'login',
-      isSignedIn: false,
-      user:{
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined:''
-      }
+    super();
+    this.state = initialState;
     }
-  }
+ 
 
   loadUser = (data) =>{
     this.setState( {user:{
@@ -100,7 +102,7 @@ class App extends Component {
   onRouteChange = (route) => {
     console.log('current route: ',route);
     if (route === 'signout'){
-      this.setState({isSignedIn: false})
+      this.setState(initialState)
     }else if (route === 'home'){
       this.setState({isSignedIn: true})
     }
@@ -117,7 +119,7 @@ class App extends Component {
           return <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
  
       case 'signout' : 
-          return  <Login onRouteChange={this.onRouteChange}/>
+          return  <Login loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
    
       default:  
           return <div>
